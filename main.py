@@ -27,7 +27,7 @@ def main():
     # Collect token usage information for cost/efficieny awareness
     usage = response.usage_metadata
     print("\n--- Token Usage ---")
-    print(f"Prompt Tokens: {usage.prompt_tokens}")
+    print(f"Prompt Tokens: {usage.prompt_token_count}")
     print(f"Response Tokens: {usage.candidates_token_count}")
 
 
