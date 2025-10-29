@@ -30,7 +30,7 @@ def main():
     # Initialize the Gemini API Client with the provided key 
     client = genai.Client(api_key=api_key)
 
-     messages = [
+    messages = [
         types.Content(role="user", parts=[types.Part(text=user_prompt)]),
     ]
 
