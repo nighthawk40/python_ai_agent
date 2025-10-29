@@ -8,14 +8,19 @@ def main():
     # Load environment variables from the .env file into os.environ
     load_dotenv()
 
+    # Check if --verbose flag is included
+    verbose = "--verbose" in sys.argv
+
+    # Remove --verbose from sys.argv to avoid interference with prompt processing
+    args = [arg for arg in sys.argv[1:] if arg != "--verbose"]
+
     # Ensure user supplied a prompt on command line
-    if len(sys.argv) < 2:
-        print('Error: No prompt provided.\nUsage: uv run main.py "your prompt here"', file=sys.stderr)
+    if len(args) < 1:
+        print('Error: No prompt provided.\nUsage: uv run main.py "your prompt here" [--verbose]', file=sys.stderr)
         sys.exit(1)
 
-    
     # Store user input  
-    user_prompt = sys.argv[1]
+    user_prompt = args[0] # first non-flag argument is the prompt
 
     # Retrieve the Gemini API key from the environment 
     api_key = os.getenv("GEMINI_API_KEY")
@@ -29,6 +34,10 @@ def main():
         types.Content(role="user", parts=[types.Part(text=user_prompt)]),
     ]
 
+    # If verbose, show the prompt that is being sent
+    if verbose:
+        print(f"User prompt: {user_prompt}")
+
     # Send a single prompt to the Gemnini model and receive a response
     response = client.models.generate_content(
         model="gemini-2.0-flash-001",
@@ -39,11 +48,12 @@ def main():
     # print("\n=== Model Response ===")
     print(response.text)
     
-    # Collect token usage information for cost/efficieny awareness
-    usage = response.usage_metadata
-    # print("\n=== Token Usage ===")
-    print(f"Prompt tokens: {usage.prompt_token_count}")
-    print(f"Response tokens: {usage.candidates_token_count}")
+    # Collect token usage information for cost/efficieny awareness if verbose
+    if verbose:
+        usage = response.usage_metadata
+        # print("\n=== Token Usage ===")
+        print(f"Prompt tokens: {usage.prompt_token_count}")
+        print(f"Response tokens: {usage.candidates_token_count}")
 
 
 if __name__ == "__main__":
