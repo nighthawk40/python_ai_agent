@@ -1,40 +1,32 @@
 # tests.py (project root)
 
-from functions.get_file_content import get_file_content
+from functions.write_file import write_file
 
 
-def print_block(title: str, output: str) -> None:
-    print(title)
-    if output.startswith("Error:"):
-        # Indent error messages per prior convention
-        print("    " + output)
+def print_result(label: str, result: str):
+    print(label)
+    if result.startswith("Error:"):
+        print("    " + result)   # indent error messages
     else:
-        # Indent file contents for readability
-        for line in output.splitlines():
-            print(" " + line)
-    print()  # blank line between sections
+        print(" " + result)      # indent success message
+    print()  # blank line
 
 
-def main() -> None:
-    # 1) calculator/main.py
-    print('get_file_content("calculator", "main.py")')
-    out = get_file_content("calculator", "main.py")
-    print_block("Result for 'main.py':", out)
+def main():
+    # 1) Overwrite existing lorem.txt
+    print('write_file("calculator", "lorem.txt", "wait, this isn\'t lorem ipsum")')
+    out = write_file("calculator", "lorem.txt", "wait, this isn't lorem ipsum")
+    print_result("Result for overwriting lorem.txt:", out)
 
-    # 2) calculator/pkg/calculator.py
-    print('get_file_content("calculator", "pkg/calculator.py")')
-    out = get_file_content("calculator", "pkg/calculator.py")
-    print_block("Result for 'pkg/calculator.py':", out)
+    # 2) Create new file in nested directory
+    print('write_file("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet")')
+    out = write_file("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet")
+    print_result("Result for writing pkg/morelorem.txt:", out)
 
-    # 3) absolute path outside working dir → should be an error
-    print('get_file_content("calculator", "/bin/cat")')
-    out = get_file_content("calculator", "/bin/cat")
-    print_block("Result for '/bin/cat':", out)
-
-    # 4) missing file inside working dir → should be an error
-    print('get_file_content("calculator", "pkg/does_not_exist.py")')
-    out = get_file_content("calculator", "pkg/does_not_exist.py")
-    print_block("Result for 'pkg/does_not_exist.py':", out)
+    # 3) Attempt to write outside working directory → should be blocked
+    print('write_file("calculator", "/tmp/temp.txt", "this should not be allowed")')
+    out = write_file("calculator", "/tmp/temp.txt", "this should not be allowed")
+    print_result("Result for /tmp/temp.txt:", out)
 
 
 if __name__ == "__main__":
