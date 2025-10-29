@@ -21,14 +21,14 @@ def main():
     )
 
     # Display the text output returned by the model 
-    print("\n=== Model Response ===")
+    # print("\n=== Model Response ===")
     print(response.text)
     
     # Collect token usage information for cost/efficieny awareness
     usage = response.usage_metadata
-    print("\n=== Token Usage ===")
-    print(f"- Prompt Tokens: {usage.prompt_token_count}")
-    print(f"- Response Tokens: {usage.candidates_token_count}")
+    # print("\n=== Token Usage ===")
+    print(f"Prompt tokens: {usage.prompt_token_count}")
+    print(f"Response tokens: {usage.candidates_token_count}")
 
 
 if __name__ == "__main__":
