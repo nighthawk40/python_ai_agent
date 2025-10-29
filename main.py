@@ -2,6 +2,7 @@ import os
 import sys
 from dotenv import load_dotenv
 from google import genai 
+from google.genai import types
 
 def main():
     # Load environment variables from the .env file into os.environ
@@ -14,7 +15,7 @@ def main():
 
     
     # Store user input  
-    prompt = sys.argv[1]
+    user_prompt = sys.argv[1]
 
     # Retrieve the Gemini API key from the environment 
     api_key = os.getenv("GEMINI_API_KEY")
@@ -24,10 +25,14 @@ def main():
     # Initialize the Gemini API Client with the provided key 
     client = genai.Client(api_key=api_key)
 
+     messages = [
+        types.Content(role="user", parts=[types.Part(text=user_prompt)]),
+    ]
+
     # Send a single prompt to the Gemnini model and receive a response
     response = client.models.generate_content(
         model="gemini-2.0-flash-001",
-        contents=prompt 
+        contents=messages,
     )
 
     # Display the text output returned by the model 
