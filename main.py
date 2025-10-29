@@ -1,10 +1,20 @@
 import os 
+import sys
 from dotenv import load_dotenv
 from google import genai 
 
 def main():
     # Load environment variables from the .env file into os.environ
     load_dotenv()
+
+    # Ensure user supplied a prompt on command line
+    if len(sys.argv) < 2:
+        print('Error: No prompt provided.\nUsage: uv run main.py "your prompt here"', file=sys.stderr)
+        sys.exit(1)
+
+    
+    # Store user input  
+    prompt = sys.argv[1]
 
     # Retrieve the Gemini API key from the environment 
     api_key = os.getenv("GEMINI_API_KEY")
@@ -17,7 +27,7 @@ def main():
     # Send a single prompt to the Gemnini model and receive a response
     response = client.models.generate_content(
         model="gemini-2.0-flash-001",
-        contents="Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
+        contents=prompt 
     )
 
     # Display the text output returned by the model 
