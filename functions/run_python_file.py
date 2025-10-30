@@ -34,8 +34,8 @@ def run_python_file(working_directory, file_path, args=[]):
             text=True,
         )
 
-        stdout = (completed.stdout or "").strip()
-        stderr = (completed.stderr or "").strip()
+        stdout = completed.stdout.strip()
+        stderr = completed.stderr.strip()
 
         # If both empty -> no output
         if not stdout and not stderr:
