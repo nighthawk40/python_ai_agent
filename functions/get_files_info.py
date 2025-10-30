@@ -1,4 +1,4 @@
-from os.path import abspath, join, isdir, getsize, isfile
+from os.path import abspath, join, isdir, getsize
 from os import listdir, sep 
 
 def get_files_info(working_directory, directory="."):
