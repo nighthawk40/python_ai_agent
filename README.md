@@ -1,0 +1,1 @@
+This is my go through of Boot.dev's AI Agent project in Python. It should not be used as an actual program but for learning purposes only.
